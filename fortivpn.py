@@ -249,10 +249,15 @@ fortivpn help
 
 
 def main():
+    # check for first run
+    if not os.path.exists(CONFIGFILE):
+        firstRun()
+        return 0
+
     if len(sys.argv) <= 1:
         showHelp()
         return 1
-    
+
     if sys.argv[1].lower() in ("help",):
         showHelp()
         return 0
@@ -274,11 +279,6 @@ def main():
             logfilename = lockfile.readline()[:-1]
             lockfile.close()
         os.system(f"tail -f -n +1 /tmp/{logfilename}.txt")
-        return 0
-
-    # check for first run
-    if not os.path.exists(CONFIGFILE):
-        firstRun()
         return 0
 
     # read config file and decrypt if needed
